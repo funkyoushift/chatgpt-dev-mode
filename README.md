@@ -1610,3 +1610,49 @@ Follow this tutorial step-by-step, and you'll have a working MCP server integrat
 *Version: 2.5.0*
 *MCP Server Tools Announcement: September 9, 2025*
 *Live Demo: https://mcp-oauth-server.fly.dev*
+
+## FunkYou Dev Helper expanded tools
+
+This patched helper exposes the original required MCP tools (`search`, `fetch`) plus Fly, repo, GitHub, health, secret-name, and Discord diagnostic tools for the FunkYouAI workflow.
+
+### Available tools
+
+- `fly_status` — show Fly app status for an allowlisted app.
+- `fly_logs` — show recent Fly logs.
+- `fly_recent_errors` — filter recent Fly logs to likely errors/warnings/crashes.
+- `fly_boot_summary` — summarize boot/login/config lines from recent logs.
+- `bot_health_check` — combine status + boot summary + recent errors.
+- `fly_current_image` — show the current running Fly image/version/status.
+- `fly_deploy` — clone the allowlisted repo and deploy the allowlisted Fly app.
+- `fly_restart` — restart Fly machines for an allowlisted app.
+- `fly_list_secret_names` — list Fly secret names only, never values.
+- `fly_set_secret` — set an allowlisted Fly secret value without returning the value.
+- `repo_run_script` — clone the allowlisted repo, install dependencies, and run an allowlisted npm script.
+- `repo_file_search` — clone the allowlisted repo and search text files.
+- `repo_fetch_file` — clone the allowlisted repo and fetch a text file by relative path.
+- `github_latest_commit` — report latest commit on the allowlisted branch.
+- `github_update_file` — commit a file update directly to an allowlisted branch.
+- `github_create_pr` — create a branch, commit one file update, push it, and open a PR.
+- `discord_bot_ping` — check the Discord bot token by calling Discord `/users/@me` when a bot token is configured.
+
+### Recommended Fly secrets
+
+```bash
+fly secrets set FLY_ACCESS_TOKEN="YOUR_FLY_TOKEN" -a funkyou-dev-helper
+fly secrets set GITHUB_TOKEN="YOUR_GITHUB_TOKEN" -a funkyou-dev-helper
+```
+
+Optional if you want `discord_bot_ping`:
+
+```bash
+fly secrets set DISCORD_TOKEN="YOUR_DISCORD_BOT_TOKEN" -a funkyou-dev-helper
+```
+
+### Optional configuration
+
+```bash
+fly secrets set WRITE_TOOLS_ENABLED="true" -a funkyou-dev-helper
+fly secrets set ALLOW_ANY_SECRET_NAME="true" -a funkyou-dev-helper
+```
+
+`ALLOW_ANY_SECRET_NAME=true` makes `fly_set_secret` accept any uppercase secret name. Without it, the helper accepts the default allowlist in `server.js` or names from `ALLOWED_SECRET_NAMES`.
