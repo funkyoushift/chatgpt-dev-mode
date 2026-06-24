@@ -1,0 +1,14 @@
+{
+  "name": "chatgpt-dev-mode-helper",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.3"
+  }
+}
